@@ -1,261 +1,262 @@
-// endereço da API que retorna os posts
-// usamos const porque esse valor nunca muda
-const API = "https://jsonplaceholder.typicode.com/posts"
+// link da API da Jikan que traz personagens
+const API_BASE = "https://api.jikan.moe/v4/characters"
+
+// link usado quando vamos pesquisar pelo nome
+// o texto digitado é colocado no final da URL
+const API_BUSCA = "https://api.jikan.moe/v4/characters?q="
 
 
-// pegando elementos do HTML para manipular com JavaScript
+// pegando elementos do HTML para usar no JavaScript
 
-// div onde os cards dos posts serão exibidos
-// getElementById pega um elemento da página usando o id definido no HTML
+// lugar onde os cards dos personagens aparecem
 const lista = document.getElementById("lista")
 
-// área onde aparece o detalhe do post clicado
-// quando o usuário clicar em um card, o conteúdo aparecerá aqui
+// área onde mostra o detalhe do personagem clicado
 const detalhe = document.getElementById("detalhe")
 
-// campo de busca onde o usuário digita
-// usamos esse elemento para ler o texto digitado
+// campo onde o usuário digita para pesquisar
 const busca = document.getElementById("busca")
 
-// mensagem de carregamento
-// aparece enquanto os dados da API estão sendo buscados
+// mensagem de carregando
 const loading = document.getElementById("loading")
 
 // mensagem de erro
-// usada quando algo dá errado ou quando o campo está vazio
 const erro = document.getElementById("erro")
 
-// mensagem quando não existem resultados
-// aparece quando a busca não encontra posts
+// mensagem quando não encontra nada
 const vazio = document.getElementById("vazio")
 
 
-// array que guarda todos os posts recebidos da API
-// usamos let porque ele será preenchido depois
-let posts = []
+// array que guarda os personagens que aparecem quando abre o site
+let personagensInicio = []
 
-
-// quando a página abre mostramos mensagem pedindo busca
-// isso evita que a tela fique vazia sem explicação
-erro.innerText = "Digite algo para pesquisar"
+// usado para controlar o tempo da busca
+// evita ficar fazendo muitas requisições enquanto a pessoa digita
+let tempoBusca = null
 
 
 
-// função responsável por buscar os dados da API
-// async permite usar await dentro da função
-async function carregarPosts() {
+// função que cria os cards dos personagens na tela
+function mostrarLista(personagens) {
 
-    try {
+    // limpa a lista antes de colocar novos personagens
+    lista.innerHTML = ""
 
-        // ativa loading
-        // faz aparecer a mensagem "Carregando..."
-        loading.style.display = "block"
+    // se não tiver nenhum personagem
+    if (!personagens || personagens.length === 0) {
 
-        // faz requisição HTTP para a API
-        // fetch busca dados da internet
-        const resposta = await fetch(API)
-
-        // verifica se houve erro na requisição
-        // se a API responder com erro entramos no catch
-        if (!resposta.ok) {
-            throw new Error("Erro na requisição")
-        }
-
-        // converte resposta para JSON
-        // JSON é o formato que a API retorna
-        const dados = await resposta.json()
-
-        // salva posts no array
-        // agora temos todos os posts armazenados na variável posts
-        posts = dados
-
-    } catch (e) {
-
-        // mostra erro amigável na tela
-        erro.innerText = "Erro ao carregar os posts"
-
-        // mostra erro detalhado no console do navegador
-        console.log(e)
+        erro.innerText = "Nenhum personagem encontrado"
+        return
 
     }
 
-    // desativa loading
-    // esconde a mensagem de carregamento
+    // limpa mensagens se tiver resultado
+    erro.innerText = ""
+    vazio.innerText = ""
+
+
+    // percorre todos os personagens
+    personagens.forEach(personagem => {
+
+        // cria uma div para o card
+        const card = document.createElement("div")
+
+        // adiciona a classe CSS do card
+        card.className = "card"
+
+
+        // imagem padrão caso o personagem não tenha imagem
+        let imagem = "https://via.placeholder.com/300x400?text=No+Image"
+
+        // verifica se a API trouxe imagem
+        if (personagem.images && personagem.images.jpg) {
+            imagem = personagem.images.jpg.image_url
+        }
+
+
+        // conteúdo do card (imagem + nome)
+        card.innerHTML =
+            "<img src='" + imagem + "'>" +
+            "<h3>" + personagem.name + "</h3>"
+
+
+        // quando clicar no card mostra o detalhe
+        card.onclick = () => mostrarDetalhe(personagem)
+
+
+        // adiciona o card na lista
+        lista.appendChild(card)
+
+    })
+
+}
+
+
+
+// função que mostra mais informações do personagem
+function mostrarDetalhe(personagem) {
+
+    // imagem padrão
+    let imagem = "https://via.placeholder.com/300x400?text=No+Image"
+
+    // verifica se tem imagem
+    if (personagem.images && personagem.images.jpg) {
+        imagem = personagem.images.jpg.image_url
+    }
+
+
+    // monta o detalhe na tela
+    detalhe.innerHTML =
+        "<img src='" + imagem + "'>" +
+        "<h2>" + personagem.name + "</h2>" +
+        "<p>" + (personagem.about || "Sem descrição disponível") + "</p>"
+
+}
+
+
+
+// função que carrega personagens quando a página abre
+async function carregarInicio() {
+
+    // mostra mensagem de carregando
+    loading.style.display = "block"
+
+    try {
+
+        // array que vai juntar personagens de várias páginas
+        let todos = []
+
+
+        // pega personagens de várias páginas da API
+        for (let page = 1; page <= 3; page++) {
+
+            // faz a requisição
+            const resposta = await fetch(API_BASE + "?page=" + page)
+
+            // transforma em JSON
+            const dados = await resposta.json()
+
+            // junta com os anteriores
+            todos = todos.concat(dados.data)
+
+        }
+
+
+        // salva os personagens
+        personagensInicio = todos
+
+        // mostra na tela
+        mostrarLista(personagensInicio)
+
+    } catch (e) {
+
+        // erro aparece só no console
+        console.log("Erro ao carregar personagens", e)
+
+        // não mostra erro na tela inicial
+        erro.innerText = ""
+
+    }
+
+    // tira o loading
     loading.style.display = "none"
 
 }
 
 
 
-// função que cria os cards na tela
-// recebe uma lista de posts para mostrar
-function mostrarLista(listaPosts) {
-
-    // limpa a lista antes de mostrar novos cards
-    // evita duplicar os resultados
-    lista.innerHTML = ""
-
-    // se não houver resultados
-    if (listaPosts.length === 0) {
-
-        // mostra mensagem de vazio
-        vazio.innerText = "Nenhum resultado encontrado"
-        return
-
-    }
-
-    // limpa mensagem de vazio
-    vazio.innerText = ""
-
-    // percorre todos os posts
-    // usamos um loop for para passar por cada post
-    for (let i = 0; i < listaPosts.length; i++) {
-
-        // pega um post da lista
-        const post = listaPosts[i]
-
-        // cria card
-        // cria uma nova div no HTML
-        const card = document.createElement("div")
-
-        // adiciona a classe card para aplicar o CSS
-        card.className = "card"
-
-        // conteúdo do card
-        // mostra o título do post dentro do card
-        card.innerHTML = "<h3>" + post.title + "</h3>"
-
-        // quando clicar mostra o detalhe
-        // arrow function executa a função mostrarDetalhe
-        card.onclick = () => {
-            mostrarDetalhe(post)
-        }
-
-        // adiciona card na lista
-        // coloca o card dentro da div "lista"
-        lista.appendChild(card)
-
-    }
-
-}
-
-
-
-// função que mostra o detalhe do post
-// recebe o post que foi clicado
-function mostrarDetalhe(post) {
-
-    // cria o conteúdo do detalhe usando os dados do post
-    detalhe.innerHTML =
-        "<h2>" + post.title + "</h2>" +
-        "<p>" + post.body + "</p>" +
-        "<p>ID: " + post.id + "</p>"
-
-}
-
-
-
-// evento executado quando o usuário digita no campo de busca
-// input dispara sempre que algo é digitado
-busca.addEventListener("input", async function () {
-
-    // pega texto digitado
-    // toLowerCase deixa tudo minúsculo para facilitar comparação
-    // trim remove espaços vazios
-    const texto = busca.value.toLowerCase().trim()
-
-    // limpa detalhe ao pesquisar
-    // evita que o detalhe antigo continue aparecendo
-    detalhe.innerHTML = ""
-
-    // se campo estiver vazio
-    if (texto === "") {
-
-        // mostra mensagem pedindo busca
-        erro.innerText = "Digite algo para pesquisar"
-
-        // limpa lista de cards
-        lista.innerHTML = ""
-
-        // limpa mensagem de vazio
-        vazio.innerText = ""
-
-        // limpa detalhe
-        detalhe.innerHTML = ""
-
-        // impede que o código continue executando
-        return
-
-    }
-
-    // limpa mensagem de erro
-    erro.innerText = ""
-    vazio.innerText = ""
+// função que busca personagem pelo nome
+async function buscarPersonagem(texto) {
 
     // mostra loading
     loading.style.display = "block"
 
-    // simula demora de carregamento (1 segundo)
-    // setTimeout executa o código depois de um tempo
-    setTimeout(async function () {
+    try {
 
-        // VERIFICA NOVAMENTE SE O CAMPO AINDA TEM TEXTO
-        // isso evita mostrar resultados quando o usuário apagou a busca
-        if (busca.value.trim() === "") {
+        // faz requisição com o nome digitado
+        const resposta = await fetch(API_BUSCA + texto)
 
-            lista.innerHTML = ""
-            loading.style.display = "none"
-            return
+        // transforma resposta em JSON
+        const dados = await resposta.json()
 
-        }
+        // mostra resultado
+        mostrarLista(dados.data)
 
-        // se os posts ainda não foram carregados
-        // evita fazer várias requisições para a API
-        if (posts.length === 0) {
-            await carregarPosts()
-        }
+    } catch (e) {
 
-        // filtra os posts pelo título
-        // filter percorre todos os posts e retorna apenas os que contêm o texto digitado
-        const filtrados = posts.filter(function (p) {
+        console.log("Erro na busca", e)
 
-            return p.title.toLowerCase().includes(texto)
+        // mensagem para o usuário
+        erro.innerText = "Erro na busca"
 
-        })
+    }
 
-        // mostra resultados
-        mostrarLista(filtrados)
+    // esconde loading
+    loading.style.display = "none"
 
-        // esconde loading
-        loading.style.display = "none"
+}
 
-    }, 1000)
+
+
+// roda quando a pessoa digita no campo de busca
+busca.addEventListener("input", function () {
+
+    // pega o texto digitado
+    const texto = busca.value.trim()
+
+    // limpa o detalhe quando começa nova busca
+    detalhe.innerHTML = ""
+
+
+    // cancela busca anterior
+    clearTimeout(tempoBusca)
+
+
+    // se apagar o texto volta para lista inicial
+    if (texto === "") {
+
+        mostrarLista(personagensInicio)
+        erro.innerText = ""
+
+        return
+
+    }
+
+
+    // espera um pouco antes de buscar
+    tempoBusca = setTimeout(function () {
+
+        buscarPersonagem(texto)
+
+    }, 600)
 
 })
 
 
 
-// exemplo de consumo de API com chave (pedido no trabalho)
+// quando o site abre roda essa função
+window.onload = function () {
 
-// URL da API da NASA
+    carregarInicio()
+
+}
+
+
+
+// exemplo de uso de API com chave (pedido do professor)
+
 const NASA_API = "https://api.nasa.gov/planetary/apod"
-
-// chave de acesso da API
 const API_KEY = "DEMO_KEY"
 
-// função que mostra como consumir uma API com chave
+// função só de exemplo
 async function exemploNasa() {
 
-    // cria a URL completa com a chave da API
     const url = NASA_API + "?api_key=" + API_KEY
 
-    // faz requisição
     const resposta = await fetch(url)
 
-    // converte resposta para JSON
     const dados = await resposta.json()
 
-    // mostra resultado no console
     console.log(dados)
 
 }

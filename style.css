@@ -1,107 +1,320 @@
-/* Estilo geral da página */
 body {
 
-    font-family: Arial;
-    /* Define a fonte usada no site */
+    /* remove margens padrão que o navegador coloca */
+    margin: 0;
 
-    margin: 20px;
-    /* Cria um espaço ao redor da página */
+    /* define a fonte usada no site */
+    font-family: Arial, Helvetica, sans-serif;
 
-    background: #f4f4f4;
-    /* Define a cor de fundo da página */
+    /* cria um fundo em degradê diagonal (estilo anime/cyber) */
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
 
-}
+    /* define a cor padrão dos textos */
+    color: white;
 
-/* Estilo do campo de busca */
-input {
-
-    padding: 10px;
-    /* Espaçamento interno dentro do input */
-
-    margin-bottom: 20px;
-    /* Espaço abaixo do campo */
-
-    width: 300px;
-    /* Largura do campo de busca */
+    /* cria espaço interno nas bordas da página */
+    padding: 30px;
 
 }
 
-/* Área onde os cards serão organizados */
-#lista {
 
-    display: flex;
-    /* Organiza os cards lado a lado */
 
-    flex-wrap: wrap;
-    /* Permite quebrar linha quando faltar espaço */
+/* TÍTULO PRINCIPAL */
 
-    gap: 15px;
-    /* Espaço entre os cards */
+h1 {
 
-}
+    /* centraliza o texto horizontalmente */
+    text-align: center;
 
-/* Estilo de cada card */
-.card {
+    /* define o tamanho da fonte */
+    font-size: 40px;
 
-    width: 200px;
-    /* Largura do card */
+    /* cria espaço abaixo do título */
+    margin-bottom: 30px;
 
-    border: 1px solid #ccc;
-    /* Borda do card */
+    /* define a cor do texto */
+    color: #ff2e63;
 
-    background: white;
-    /* Cor de fundo */
-
-    padding: 10px;
-    /* Espaço interno */
-
-    cursor: pointer;
-    /* Mostra que o card é clicável */
+    /* cria efeito de brilho neon ao redor do texto */
+    text-shadow:
+        0 0 10px #ff2e63,
+        0 0 20px #ff2e63;
 
 }
 
-/* Efeito quando passa o mouse sobre o card */
-.card:hover {
 
-    background: #eee;
-    /* Muda a cor do card */
+
+/* CAMPO DE BUSCA  */
+
+#busca {
+
+    /* faz o input se comportar como bloco */
+    display: block;
+
+    /* centraliza horizontalmente */
+    margin: auto;
+
+    /* largura do campo de busca */
+    width: 320px;
+
+    /* espaço interno dentro do input */
+    padding: 12px;
+
+    /* arredonda as bordas */
+    border-radius: 8px;
+
+    /* remove borda padrão do navegador */
+    border: none;
+
+    /* tamanho da fonte dentro do input */
+    font-size: 16px;
+
+    /* remove a borda azul padrão quando clica no input */
+    outline: none;
+
+    /* cor de fundo do input */
+    background: #111;
+
+    /* cor do texto digitado */
+    color: white;
+
+    /* cria efeito de brilho ao redor do campo */
+    box-shadow: 0 0 10px #08f7fe;
 
 }
 
-/* Área que mostra o detalhe do post */
-#detalhe {
 
-    margin-top: 30px;
-    /* Espaço acima do detalhe */
 
-    border: 2px solid black;
-    /* Borda mais forte */
+/* MENSAGENS DO SISTEMA */
+/* loading, erro e vazio compartilham algumas propriedades */
 
-    padding: 20px;
-    /* Espaçamento interno */
-
-    background: white;
-    /* Cor de fundo */
-
-}
-
-/* Cor da mensagem de carregamento */
-#loading {
-
-    color: blue;
-
-}
-
-/* Cor da mensagem de erro */
-#erro {
-
-    color: red;
-
-}
-
-/* Cor da mensagem de vazio */
+#loading,
+#erro,
 #vazio {
 
-    color: gray;
+    /* centraliza o texto */
+    text-align: center;
+
+    /* espaço acima da mensagem */
+    margin-top: 10px;
+
+}
+
+
+
+/* mensagem de erro */
+#erro {
+
+    /* vermelho neon */
+    color: #ff2e63;
+
+}
+
+
+/* mensagem de carregamento */
+#loading {
+
+    /* azul neon */
+    color: #08f7fe;
+
+}
+
+
+/* mensagem de lista vazia */
+#vazio {
+
+    /* cinza claro */
+    color: #aaa;
+
+}
+
+
+
+/* GRID DE PERSONAGENS */
+
+#lista {
+
+    /* transforma a lista em grid */
+    display: grid;
+
+    /* cria colunas automáticas que se ajustam ao tamanho da tela */
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+
+    /* espaço entre os cards */
+    gap: 25px;
+
+    /* espaço acima da lista */
+    margin-top: 40px;
+
+}
+
+
+
+/* CARD DO PERSONAGEM */
+
+.card {
+
+    /* fundo escuro do card */
+    background: #111;
+
+    /* bordas arredondadas */
+    border-radius: 10px;
+
+    /* corta qualquer conteúdo que ultrapasse o card */
+    overflow: hidden;
+
+    /* efeito de brilho ao redor */
+    box-shadow: 0 0 10px #08f7fe;
+
+    /* muda cursor para indicar que é clicável */
+    cursor: pointer;
+
+    /* animação suave ao aplicar hover */
+    transition: 0.3s;
+
+}
+
+
+
+/* EFEITO AO PASSAR O MOUSE */
+
+.card:hover {
+
+    /* move o card um pouco para cima */
+    transform: translateY(-10px)
+        /* aumenta levemente o tamanho */
+        scale(1.05);
+
+    /* cria brilho maior no hover */
+    box-shadow:
+        0 0 10px #08f7fe,
+        0 0 20px #08f7fe,
+        0 0 30px #ff2e63;
+
+}
+
+
+
+/* IMAGEM DO PERSONAGEM */
+
+.card img {
+
+    /* imagem ocupa toda largura do card */
+    width: 100%;
+
+    /* altura fixa para manter padrão */
+    height: 220px;
+
+    /* ajusta a imagem para preencher sem distorcer */
+    object-fit: cover;
+
+}
+
+
+
+/*  NOME DO PERSONAGEM */
+
+.card h3 {
+
+    /* centraliza o nome */
+    text-align: center;
+
+    /* espaço interno ao redor do texto */
+    padding: 12px;
+
+    /* cor azul neon */
+    color: #08f7fe;
+
+    /* tamanho da fonte */
+    font-size: 16px;
+
+}
+
+
+
+/* ÁREA DE DETALHE DO PERSONAGEM */
+
+#detalhe {
+
+    /* espaço acima da área de detalhe */
+    margin-top: 50px;
+
+    /* fundo escuro */
+    background: #111;
+
+    /* bordas arredondadas */
+    border-radius: 12px;
+
+    /* espaço interno */
+    padding: 25px;
+
+    /* largura máxima do container */
+    max-width: 700px;
+
+    /* centraliza horizontalmente */
+    margin-left: auto;
+    margin-right: auto;
+
+    /* brilho neon ao redor da caixa */
+    box-shadow:
+        0 0 15px #ff2e63,
+        0 0 30px #08f7fe;
+
+}
+
+
+
+/*  IMAGEM DO DETALHE  */
+
+#detalhe img {
+
+    /* transforma em bloco */
+    display: block;
+
+    /* centraliza a imagem */
+    margin: auto;
+
+    /* largura da imagem */
+    width: 250px;
+
+    /* espaço abaixo da imagem */
+    margin-bottom: 20px;
+
+    /* bordas arredondadas */
+    border-radius: 10px;
+
+}
+
+
+
+/* NOME DO PERSONAGEM NO DETALHE  */
+
+#detalhe h2 {
+
+    /* centraliza texto */
+    text-align: center;
+
+    /* cor rosa neon */
+    color: #ff2e63;
+
+    /* espaço abaixo do título */
+    margin-bottom: 10px;
+
+}
+
+
+
+/*  DESCRIÇÃO DO PERSONAGEM  */
+
+#detalhe p {
+
+    /* centraliza texto */
+    text-align: center;
+
+    /* espaço entre linhas do texto */
+    line-height: 1.6;
+
+    /* cor cinza clara para melhor leitura */
+    color: #ddd;
 
 }
