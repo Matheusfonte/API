@@ -1,0 +1,107 @@
+/* Estilo geral da página */
+body {
+
+    font-family: Arial;
+    /* Define a fonte usada no site */
+
+    margin: 20px;
+    /* Cria um espaço ao redor da página */
+
+    background: #f4f4f4;
+    /* Define a cor de fundo da página */
+
+}
+
+/* Estilo do campo de busca */
+input {
+
+    padding: 10px;
+    /* Espaçamento interno dentro do input */
+
+    margin-bottom: 20px;
+    /* Espaço abaixo do campo */
+
+    width: 300px;
+    /* Largura do campo de busca */
+
+}
+
+/* Área onde os cards serão organizados */
+#lista {
+
+    display: flex;
+    /* Organiza os cards lado a lado */
+
+    flex-wrap: wrap;
+    /* Permite quebrar linha quando faltar espaço */
+
+    gap: 15px;
+    /* Espaço entre os cards */
+
+}
+
+/* Estilo de cada card */
+.card {
+
+    width: 200px;
+    /* Largura do card */
+
+    border: 1px solid #ccc;
+    /* Borda do card */
+
+    background: white;
+    /* Cor de fundo */
+
+    padding: 10px;
+    /* Espaço interno */
+
+    cursor: pointer;
+    /* Mostra que o card é clicável */
+
+}
+
+/* Efeito quando passa o mouse sobre o card */
+.card:hover {
+
+    background: #eee;
+    /* Muda a cor do card */
+
+}
+
+/* Área que mostra o detalhe do post */
+#detalhe {
+
+    margin-top: 30px;
+    /* Espaço acima do detalhe */
+
+    border: 2px solid black;
+    /* Borda mais forte */
+
+    padding: 20px;
+    /* Espaçamento interno */
+
+    background: white;
+    /* Cor de fundo */
+
+}
+
+/* Cor da mensagem de carregamento */
+#loading {
+
+    color: blue;
+
+}
+
+/* Cor da mensagem de erro */
+#erro {
+
+    color: red;
+
+}
+
+/* Cor da mensagem de vazio */
+#vazio {
+
+    color: gray;
+
+}
