@@ -21,14 +21,18 @@ Jikan API – https://api.jikan.moe
 - Campo de busca para filtrar personagens
 - Exibir detalhes ao clicar em um card
 - Estados da interface:
+
+
+
   - Loading (carregando dados)
   - Erro (mensagem amigável)
   - Vazio (nenhum resultado encontrado)
 
 ## Organização do projeto
-index.html → estrutura da página  
-styles.css → estilos da interface  
-app.js → lógica da aplicação e consumo da API  
+- index.html → estrutura da página (elementos, input de busca, lista de personagens e área de detalhe)  
+- styles.css → estilos visuais da interface (cores, layout, cards e efeitos)  
+- script.js → lógica da aplicação (requisições fetch, busca de personagens, criação dos cards e exibição dos detalhes)  
+- favicon.svg → ícone do site exibido na aba do navegador
 
 ## Como executar
 1. Baixar ou clonar o projeto  
