@@ -3,7 +3,7 @@ const API_BASE = "https://api.jikan.moe/v4/characters"
 
 // link usado para pesquisar pelo nome
 // o texto digitado é colocado no final da URL
-const API_BUSCA = "https://api.jikan.moe/v4/  characters?q="
+const API_BUSCA = "https://api.jikan.moe/v4/characters?q="
 
 
 const lista = document.getElementById("lista")
