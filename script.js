@@ -17,7 +17,6 @@ const vazio = document.getElementById("vazio")
 // array que guarda os personagens que aparecem quando abre o site
 let personagensInicio = []
 
-// usado para controlar o tempo da busca
 // evita ficar fazendo muitas requisições enquanto a pessoa digita
 let tempoBusca = null
 
