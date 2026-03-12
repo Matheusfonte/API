@@ -1,29 +1,16 @@
 // link da API da Jikan que traz personagens
 const API_BASE = "https://api.jikan.moe/v4/characters"
 
-// link usado quando vamos pesquisar pelo nome
+// link usado para pesquisar pelo nome
 // o texto digitado é colocado no final da URL
-const API_BUSCA = "https://api.jikan.moe/v4/characters?q="
+const API_BUSCA = "https://api.jikan.moe/v4/  characters?q="
 
 
-// pegando elementos do HTML para usar no JavaScript
-
-// lugar onde os cards dos personagens aparecem
 const lista = document.getElementById("lista")
-
-// área onde mostra o detalhe do personagem clicado
 const detalhe = document.getElementById("detalhe")
-
-// campo onde o usuário digita para pesquisar
 const busca = document.getElementById("busca")
-
-// mensagem de carregando
 const loading = document.getElementById("loading")
-
-// mensagem de erro
 const erro = document.getElementById("erro")
-
-// mensagem quando não encontra nada
 const vazio = document.getElementById("vazio")
 
 
@@ -60,8 +47,6 @@ function mostrarLista(personagens) {
 
         // cria uma div para o card
         const card = document.createElement("div")
-
-        // adiciona a classe CSS do card
         card.className = "card"
 
 
@@ -79,8 +64,6 @@ function mostrarLista(personagens) {
             "<img src='" + imagem + "'>" +
             "<h3>" + personagem.name + "</h3>"
 
-
-        // quando clicar no card mostra o detalhe
         card.onclick = () => mostrarDetalhe(personagem)
 
 
@@ -91,9 +74,6 @@ function mostrarLista(personagens) {
 
 }
 
-
-
-// função que mostra mais informações do personagem
 function mostrarDetalhe(personagem) {
 
     // imagem padrão
@@ -118,7 +98,6 @@ function mostrarDetalhe(personagem) {
 // função que carrega personagens quando a página abre
 async function carregarInicio() {
 
-    // mostra mensagem de carregando
     loading.style.display = "block"
 
     try {
@@ -150,7 +129,6 @@ async function carregarInicio() {
 
     } catch (e) {
 
-        // erro aparece só no console
         console.log("Erro ao carregar personagens", e)
 
         // não mostra erro na tela inicial
@@ -168,7 +146,6 @@ async function carregarInicio() {
 // função que busca personagem pelo nome
 async function buscarPersonagem(texto) {
 
-    // mostra loading
     loading.style.display = "block"
 
     try {
@@ -185,8 +162,6 @@ async function buscarPersonagem(texto) {
     } catch (e) {
 
         console.log("Erro na busca", e)
-
-        // mensagem para o usuário
         erro.innerText = "Erro na busca"
 
     }
